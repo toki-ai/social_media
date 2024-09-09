@@ -28,6 +28,13 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
+    public List<User> findAllUser() {
+        List<User> list = new ArrayList<>();
+        list = userRepository.findAll();
+        return list;
+    }
+
+    @Override
     public User findUserById(Integer userId) throws Exception {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){

@@ -8,6 +8,8 @@ public interface UserService {
 
     public User registerUser (User user);
 
+    public List<User> findAllUser();
+
     public User findUserById (Integer userId) throws Exception;
 
     public User findUserByEmail (String userEmail) throws Exception;

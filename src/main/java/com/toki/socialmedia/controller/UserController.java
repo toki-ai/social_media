@@ -14,15 +14,11 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    UserRepository userRepository;
-
-    @Autowired
     private UserServiceImpl userServiceImpl;
 
     @GetMapping("/users")
     public List<User> getAllUser(){
-        List<User> list = new ArrayList<>();
-        list = userRepository.findAll();
+        List<User> list = userServiceImpl.findAllUser();
         return list;
     }
 

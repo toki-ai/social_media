@@ -19,6 +19,15 @@ public class PostServiceImpl implements PostService {
     PostRepository postRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserServiceImpl userServiceImpl;
+
+    @Override
+    public List<Post> findAllPost() {
+        List<Post> list = new ArrayList<>();
+        list = postRepository.findAll();
+        return list;
+    }
 
     @Override
     public List<Post> findPostByUser(User user) {
@@ -36,14 +45,21 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post createNewPost(Post post) {
+    public Post createNewPost(Integer userId, Post post) {
         Post newPost = new Post();
         newPost.setCaption(post.getCaption());
         newPost.setImage(post.getImage());
         newPost.setVideo(post.getVideo());
-        newPost.setUser(post.getUser());
+        User user = null;
+        try {
+            user = userServiceImpl.findUserById(userId);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        newPost.setUser(user);
         newPost.setDate(LocalDateTime.now());
-        return newPost;
+        Post updatePost = postRepository.save(newPost);
+        return updatePost;
     }
 
     @Override

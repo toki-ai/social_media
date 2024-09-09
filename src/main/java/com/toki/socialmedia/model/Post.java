@@ -6,14 +6,16 @@ import jakarta.persistence.*;
 
 @Entity
 public class Post {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String caption;
     private String image;
     private String video;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     private LocalDateTime date;
+    @ManyToMany
     private List<User> liked;
 
     public Post() {

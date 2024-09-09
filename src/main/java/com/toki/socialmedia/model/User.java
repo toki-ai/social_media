@@ -14,8 +14,11 @@ public class User {
     private String password;
     private String email;
     private String gender;
+    @ElementCollection
     private List<Integer> following;
+    @ElementCollection
     private List<Integer> followers;
+    @OneToMany
     private List<Post> saved;
 
     public List<Post> getSaved() {
