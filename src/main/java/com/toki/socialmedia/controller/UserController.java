@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 public class UserController {
@@ -23,7 +24,7 @@ public class UserController {
     }
 
     @GetMapping("/users/{userId}")
-    public User getUserById(@PathVariable Integer userId) throws Exception {
+    public User getUserById(@PathVariable UUID userId) throws Exception {
         User user = userServiceImpl.findUserById(userId);
         return user;
     }
@@ -35,13 +36,13 @@ public class UserController {
     }
 
     @PutMapping("/users/update/{userId}")
-    public User updateUser(@PathVariable Integer userId, @RequestBody User user) throws Exception {
+    public User updateUser(@PathVariable UUID userId, @RequestBody User user) throws Exception {
         User updateUser = userServiceImpl.updateUser(userId, user);
         return updateUser;
     }
 
     @PutMapping("/users/{userId1}/follow/{userId2}")
-    public User followUser (@PathVariable Integer userId1, @PathVariable Integer userId2) throws Exception {
+    public User followUser (@PathVariable UUID userId1, @PathVariable UUID userId2) throws Exception {
         User user1 = userServiceImpl.followUser(userId1, userId2);
         return user1;
     }
@@ -53,7 +54,7 @@ public class UserController {
     }
 
 //    @DeleteMapping("/users/delete/{userId}")
-//    public String deleteUser(@PathVariable Integer userId) throws Exception {
+//    public String deleteUser(@PathVariable UUID userId) throws Exception {
 //        Optional<User> user = userRepository.findById(userId);
 //        if (user.isPresent()) {
 //            userRepository.delete(user.get());

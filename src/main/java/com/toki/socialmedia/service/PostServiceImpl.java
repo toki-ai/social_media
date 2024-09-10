@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -36,7 +37,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post findPostById(Integer postId) throws Exception {
+    public Post findPostById(UUID postId) throws Exception {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isPresent()) {
             return post.get();
@@ -45,7 +46,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post createNewPost(Integer userId, Post post) {
+    public Post createNewPost(UUID userId, Post post) {
         Post newPost = new Post();
         newPost.setCaption(post.getCaption());
         newPost.setImage(post.getImage());
@@ -63,11 +64,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public String deletePost(Integer postId, Integer userId) throws Exception {
+    public String deletePost(UUID postId, UUID userId) throws Exception {
         Optional<Post> post = postRepository.findById(postId);
         Optional<User> user = userRepository.findById(userId);
         if (post.isPresent() && user.isPresent()) {
-            if (post.get().getUser().getId() == userId) {
+            if (post.get().getUser().getId().equals(userId)) {
                 postRepository.deleteById(postId);
                 return "Post with id " + postId + " deleted successfully";
             }
@@ -77,12 +78,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(Integer postId, Post post) {
+    public Post updatePost(UUID postId, Post post) {
         return null;
     }
 
     @Override
-    public Post likePost(Integer postId, Integer userId) throws Exception {
+    public Post likePost(UUID postId, UUID userId) throws Exception {
         User user = userRepository.findById(userId).get();
         Post post = findPostById(postId);
         List<User> liked = post.getLiked();
@@ -101,7 +102,7 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post savePost(Integer postId, Integer userId) throws Exception {
+    public Post savePost(UUID postId, UUID userId) throws Exception {
         User user = userRepository.findById(userId).get();
         Post post = findPostById(postId);
         List<Post> save = user.getSaved();

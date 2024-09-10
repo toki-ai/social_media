@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -35,7 +36,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserById(Integer userId) throws Exception {
+    public User findUserById(UUID userId) throws Exception {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
             return user.get();
@@ -49,7 +50,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User followUser(Integer userId1, Integer userId2) throws Exception {
+    public User followUser(UUID userId1, UUID userId2) throws Exception {
         User user2 = findUserById(userId2);
         User user1 = findUserById(userId1);
         if (user1.getFollowing() == null) {
@@ -66,7 +67,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(Integer userId, User user) throws Exception {
+    public User updateUser(UUID userId, User user) throws Exception {
         Optional<User> updatedUser = userRepository.findById(userId);
         User changeUser = null;
         if (updatedUser.isPresent()) {

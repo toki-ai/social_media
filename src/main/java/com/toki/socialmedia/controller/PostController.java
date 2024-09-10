@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class PostController {
@@ -28,7 +29,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<Post> getPostById(@PathVariable Integer postId) {
+    public ResponseEntity<Post> getPostById(@PathVariable UUID postId) {
         try {
             Post post = postServiceImpl.findPostById(postId);
             return new ResponseEntity<Post>(post, HttpStatus.OK);
@@ -38,7 +39,7 @@ public class PostController {
     }
 
     @GetMapping("/posts/user/{userId}")
-    public ResponseEntity<List<Post>> getAllPostByUserId(@PathVariable Integer userId) {
+    public ResponseEntity<List<Post>> getAllPostByUserId(@PathVariable UUID userId) {
         try {
             User user = userServiceImpl.findUserById(userId);
             List<Post> post = postServiceImpl.findPostByUser(user);
@@ -49,13 +50,13 @@ public class PostController {
     }
 
     @PostMapping("/posts/create/{userId}")
-    public ResponseEntity<Post> createNewPost(@PathVariable Integer userId, @RequestBody Post post) {
+    public ResponseEntity<Post> createNewPost(@PathVariable UUID userId, @RequestBody Post post) {
         Post newPost = postServiceImpl.createNewPost(userId, post);
         return new ResponseEntity<Post>(newPost, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/posts/{userId}/delete/{postId}")
-    public ResponseEntity<ApiResponse> deletePost(@PathVariable Integer postId, @PathVariable Integer userId){
+    public ResponseEntity<ApiResponse> deletePost(@PathVariable UUID postId, @PathVariable UUID userId){
         try {
             String message = postServiceImpl.deletePost(postId, userId);
             return new ResponseEntity<ApiResponse>(new ApiResponse(true, message), HttpStatus.OK);
@@ -65,7 +66,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{userId}/save/{postId}")
-    public ResponseEntity<Post> savePost(@PathVariable Integer postId, @PathVariable Integer userId) {
+    public ResponseEntity<Post> savePost(@PathVariable UUID postId, @PathVariable UUID userId) {
         try {
             Post post = postServiceImpl.savePost(postId, userId);
             return new ResponseEntity<Post>(post, HttpStatus.OK);
@@ -75,7 +76,7 @@ public class PostController {
     }
 
     @PutMapping("/posts/{userId}/like/{postId}")
-    public ResponseEntity<Post> likePost(@PathVariable Integer postId, @PathVariable Integer userId) {
+    public ResponseEntity<Post> likePost(@PathVariable UUID postId, @PathVariable UUID userId) {
         try {
             Post post = postServiceImpl.likePost(postId, userId);
             return new ResponseEntity<Post>(post, HttpStatus.OK);

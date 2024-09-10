@@ -1,20 +1,24 @@
 package com.toki.socialmedia.model;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
 public class Post {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    private UUID id;
     private String caption;
     private String image;
     private String video;
+
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    //@JsonIgnore : don't get json in response if it too overload
     private User user;
     private LocalDateTime date;
+
     @ManyToMany
     private List<User> liked;
 
@@ -54,11 +58,11 @@ public class Post {
         this.image = image;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

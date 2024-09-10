@@ -3,22 +3,23 @@ package com.toki.socialmedia.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "users")
 public class User {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID id;
     private String firstname;
     private String lastname;
     private String password;
     private String email;
     private String gender;
     @ElementCollection
-    private List<Integer> following;
+    private List<UUID> following;
     @ElementCollection
-    private List<Integer> followers;
-    @OneToMany
+    private List<UUID> followers;
+    @ManyToMany
     private List<Post> saved;
 
     public List<Post> getSaved() {
@@ -29,7 +30,7 @@ public class User {
         this.saved = saved;
     }
 
-    public User(String email, String firstname, List<Integer> followers, List<Integer> following, String gender, Integer id, String lastname, String password, List<Post> saved) {
+    public User(String email, String firstname, List<UUID> followers, List<UUID> following, String gender, UUID id, String lastname, String password, List<Post> saved) {
         this.email = email;
         this.firstname = firstname;
         this.followers = followers;
@@ -43,27 +44,27 @@ public class User {
 
     public User(){}
 
-    public List<Integer> getFollowing() {
+    public List<UUID> getFollowing() {
         return following;
     }
 
-    public void setFollowing(List<Integer> following) {
+    public void setFollowing(List<UUID> following) {
         this.following = following;
     }
 
-    public List<Integer> getFollowers() {
+    public List<UUID> getFollowers() {
         return followers;
     }
 
-    public void setFollowers(List<Integer> followers) {
+    public void setFollowers(List<UUID> followers) {
         this.followers = followers;
     }
 
-    public Integer getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

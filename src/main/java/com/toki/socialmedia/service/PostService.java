@@ -5,6 +5,7 @@ import com.toki.socialmedia.model.User;
 
 import java.nio.channels.Pipe;
 import java.util.List;
+import java.util.UUID;
 
 public interface PostService {
 
@@ -12,16 +13,16 @@ public interface PostService {
 
     public List<Post> findPostByUser(User user);
 
-    public Post findPostById(Integer postId) throws Exception;
+    public Post findPostById(UUID postId) throws Exception;
 
-    public Post createNewPost(Integer userId, Post post);
+    public Post createNewPost(UUID userId, Post post);
 
-    public String deletePost(Integer postId, Integer userId) throws Exception;
+    public String deletePost(UUID postId, UUID userId) throws Exception;
 
-    public Post updatePost(Integer postId, Post post);
+    public Post updatePost(UUID postId, Post post);
 
-    public Post likePost(Integer postId, Integer userId) throws Exception;
+    public Post likePost(UUID postId, UUID userId) throws Exception;
 
-    public Post savePost(Integer postId, Integer userId) throws Exception;
+    public Post savePost(UUID postId, UUID userId) throws Exception;
 
 }
