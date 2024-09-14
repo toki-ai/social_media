@@ -7,6 +7,7 @@ import com.toki.socialmedia.response.ApiResponse;
 import com.toki.socialmedia.service.PostServiceImpl;
 import com.toki.socialmedia.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/posts")
 public class PostController {
 
     @Autowired
@@ -22,13 +24,13 @@ public class PostController {
     @Autowired
     UserServiceImpl userServiceImpl;
 
-    @GetMapping("/posts")
+    @GetMapping("/")
     public ResponseEntity<List<Post>> getAllPost() {
         List<Post> post = postServiceImpl.findAllPost();
         return new ResponseEntity<List<Post>>(post, HttpStatus.OK);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/{postId}")
     public ResponseEntity<Post> getPostById(@PathVariable UUID postId) {
         try {
             Post post = postServiceImpl.findPostById(postId);
@@ -38,7 +40,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/posts/user/{userId}")
+    @GetMapping("/{userId}")
     public ResponseEntity<List<Post>> getAllPostByUserId(@PathVariable UUID userId) {
         try {
             User user = userServiceImpl.findUserById(userId);
@@ -49,13 +51,13 @@ public class PostController {
         }
     }
 
-    @PostMapping("/posts/create/{userId}")
+    @PostMapping("/create/{userId}")
     public ResponseEntity<Post> createNewPost(@PathVariable UUID userId, @RequestBody Post post) {
         Post newPost = postServiceImpl.createNewPost(userId, post);
         return new ResponseEntity<Post>(newPost, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/posts/{userId}/delete/{postId}")
+    @DeleteMapping("/{postId}/delete/{userId}")
     public ResponseEntity<ApiResponse> deletePost(@PathVariable UUID postId, @PathVariable UUID userId){
         try {
             String message = postServiceImpl.deletePost(postId, userId);
@@ -65,7 +67,7 @@ public class PostController {
         }
     }
 
-    @PutMapping("/posts/{userId}/save/{postId}")
+    @PutMapping("/{postId}/save/{userId}")
     public ResponseEntity<Post> savePost(@PathVariable UUID postId, @PathVariable UUID userId) {
         try {
             Post post = postServiceImpl.savePost(postId, userId);
@@ -75,7 +77,7 @@ public class PostController {
         }
     }
 
-    @PutMapping("/posts/{userId}/like/{postId}")
+    @PutMapping("/{postId}/like/{userId}")
     public ResponseEntity<Post> likePost(@PathVariable UUID postId, @PathVariable UUID userId) {
         try {
             Post post = postServiceImpl.likePost(postId, userId);

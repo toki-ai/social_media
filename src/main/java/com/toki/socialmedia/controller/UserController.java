@@ -1,7 +1,6 @@
 package com.toki.socialmedia.controller;
 
 import com.toki.socialmedia.model.User;
-import com.toki.socialmedia.repository.UserRepository;
 import com.toki.socialmedia.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,42 +11,37 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/users")
+    @GetMapping("/")
     public List<User> getAllUser(){
         List<User> list = userServiceImpl.findAllUser();
         return list;
     }
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId) throws Exception {
         User user = userServiceImpl.findUserById(userId);
         return user;
     }
 
-    @PostMapping("/users/create")
-    public User createUser(@RequestBody User user){
-        User saveUser = userServiceImpl.registerUser(user);
-        return saveUser;
-    }
-
-    @PutMapping("/users/update/{userId}")
+    @PutMapping("/update/{userId}")
     public User updateUser(@PathVariable UUID userId, @RequestBody User user) throws Exception {
         User updateUser = userServiceImpl.updateUser(userId, user);
         return updateUser;
     }
 
-    @PutMapping("/users/{userId1}/follow/{userId2}")
+    @PutMapping("/{userId1}/follow/{userId2}")
     public User followUser (@PathVariable UUID userId1, @PathVariable UUID userId2) throws Exception {
         User user1 = userServiceImpl.followUser(userId1, userId2);
         return user1;
     }
 
-    @GetMapping("/users/search")
+    @GetMapping("/search")
     public List<User> searchUser(@RequestParam String query){
         List<User> searchList = userServiceImpl.searchUser(query);
         return searchList;
@@ -62,5 +56,4 @@ public class UserController {
 //        }
 //        throw new Exception("User with id: " + userId + " not found");
 //    }
-
 }

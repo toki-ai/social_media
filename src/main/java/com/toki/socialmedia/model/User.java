@@ -15,6 +15,9 @@ public class User {
     private String password;
     private String email;
     private String gender;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
     @ElementCollection
     private List<UUID> following;
     @ElementCollection
@@ -30,16 +33,25 @@ public class User {
         this.saved = saved;
     }
 
-    public User(String email, String firstname, List<UUID> followers, List<UUID> following, String gender, UUID id, String lastname, String password, List<Post> saved) {
-        this.email = email;
-        this.firstname = firstname;
-        this.followers = followers;
-        this.following = following;
-        this.gender = gender;
-        this.id = id;
-        this.lastname = lastname;
-        this.password = password;
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public User(List<Post> saved, Role role, String password, String lastname, UUID id, String gender, List<UUID> following, List<UUID> followers, String firstname, String email) {
         this.saved = saved;
+        this.role = role;
+        this.password = password;
+        this.lastname = lastname;
+        this.id = id;
+        this.gender = gender;
+        this.following = following;
+        this.followers = followers;
+        this.firstname = firstname;
+        this.email = email;
     }
 
     public User(){}
