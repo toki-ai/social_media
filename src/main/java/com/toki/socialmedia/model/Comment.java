@@ -6,28 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class User {
+public class Comment {
+
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String firstname;
-    private String lastname;
-    private String password;
-    private String email;
-    private String gender;
 
-    @ElementCollection
-    private List<UUID> following;
-    @ElementCollection
-    private List<UUID> followers;
+    private String content;
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    private User user;
+
     @ManyToMany
-    private List<Post> saved;
+    private List<User> liked;
+
 }

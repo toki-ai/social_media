@@ -7,7 +7,7 @@ import java.util.UUID;
 
 public interface UserService {
 
-    public User registerUser (User user);
+    public User registerUser(User user);
 
     public List<User> findAllUser();
 
@@ -20,5 +20,7 @@ public interface UserService {
     public User updateUser(UUID userId, User user) throws Exception;
 
     public List<User> searchUser(String query);
+
+    public User findUserByToken(String token);
 
 }

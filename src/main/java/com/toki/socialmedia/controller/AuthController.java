@@ -1,7 +1,6 @@
 package com.toki.socialmedia.controller;
 
 import com.toki.socialmedia.dto.LoginDTO;
-import com.toki.socialmedia.model.Role;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.UserRepository;
 import com.toki.socialmedia.response.AuthResponse;
@@ -22,10 +21,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     //B2: zô AuthController để tạo jwt token
-            //1. get email, password from request
-            //2. check email, password đúm chưa
-            //3. đúm òi thì save security context + tạo jwt token
-            //4. return jwt token
+    //1. get email, password from request
+    //2. check email, password đúm chưa
+    //3. đúm òi thì save security context + tạo jwt token
+    //4. return jwt token
 
     @Autowired
     UserRepository userRepository;
@@ -51,7 +50,6 @@ public class AuthController {
         newUser.setGender(user.getGender());
         newUser.setFirstname(user.getFirstname());
         newUser.setLastname(user.getLastname());
-        newUser.setRole(Role.USER);
 
         User saveUser = userRepository.save(newUser);
 

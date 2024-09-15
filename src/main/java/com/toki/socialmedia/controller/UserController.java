@@ -17,7 +17,7 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @GetMapping("/")
+    @GetMapping("")
     public List<User> getAllUser(){
         List<User> list = userServiceImpl.findAllUser();
         return list;
@@ -29,15 +29,24 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/update/{userId}")
-    public User updateUser(@PathVariable UUID userId, @RequestBody User user) throws Exception {
-        User updateUser = userServiceImpl.updateUser(userId, user);
+    @GetMapping("/profile")
+    public User getUserByToken(@RequestHeader("Authorization") String token) {
+        User reqUser = userServiceImpl.findUserByToken(token);
+        reqUser.setPassword(null);
+        return reqUser;
+    }
+
+    @PutMapping("/update")
+    public User updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) throws Exception {
+        User reqUser = userServiceImpl.findUserByToken(token);
+        User updateUser = userServiceImpl.updateUser(reqUser.getId(), user);
         return updateUser;
     }
 
-    @PutMapping("/{userId1}/follow/{userId2}")
-    public User followUser (@PathVariable UUID userId1, @PathVariable UUID userId2) throws Exception {
-        User user1 = userServiceImpl.followUser(userId1, userId2);
+    @PutMapping("/follow/{userId2}")
+    public User followUser (@RequestHeader("Authorization") String token, @PathVariable UUID userId2) throws Exception {
+        User reqUser = userServiceImpl.findUserByToken(token);
+        User user1 = userServiceImpl.followUser(reqUser.getId(), userId2);
         return user1;
     }
 

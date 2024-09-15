@@ -23,9 +23,9 @@ import java.util.List;
 public class JwtValidator extends OncePerRequestFilter {
 
     //Check token
-           //1. get token from header
-           //2. tạo UsernamePasswordAuthenticationToken(email, null, authorities)  => lấy function từ jwtProvider (provider lấy từ utils)
-           //3. save zô Security context
+    //1. get token from header
+    //2. tạo UsernamePasswordAuthenticationToken(email, null, authorities)  => lấy function từ jwtProvider (provider lấy từ utils)
+    //3. save zô Security context
     private final Environment env;
 
     @Autowired
@@ -37,20 +37,26 @@ public class JwtValidator extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+//        if ("/auth/signup".equals(request.getRequestURI())) {
+//            filterChain.doFilter(request, response);
+//            return;
+//        }
         String jwt = request.getHeader(env.getProperty("JWT_HEADER"));
         if(jwt != null){
             try{
                 String email = jwtProvider.getEmailFromToken(jwt);
-                String role = jwtProvider.getRoleFromToken(jwt);
                 List<GrantedAuthority> authorities=new ArrayList<>();
-                authorities.add(new SimpleGrantedAuthority(role));
                 Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, authorities);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {
-            logger.warn("Invalid Token: " + e.getMessage());
+                // Log the invalid token and continue the filter chain without setting the authentication
+                logger.warn("Invalid Token: " + e.getMessage());
+            }
         }
-        }
+//        else{
+//            throw new BadCredentialsException("Token not found");
+//        }
         filterChain.doFilter(request, response);
     }
 }

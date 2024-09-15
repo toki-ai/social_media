@@ -1,7 +1,7 @@
 package com.toki.socialmedia.service;
-
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.UserRepository;
+import com.toki.socialmedia.security.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +15,9 @@ public class UserServiceImpl implements UserService{
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JwtProvider jwtProvider;
 
     @Override
     public User registerUser(User user) {
@@ -84,6 +87,9 @@ public class UserServiceImpl implements UserService{
             if (user.getEmail() != null) {
                 changeUser.setEmail(user.getEmail());
             }
+            if(user.getGender() != null){
+                changeUser.setGender(user.getGender());
+            }
             User afterUpdate = userRepository.save(changeUser);
             return afterUpdate;
         }
@@ -94,6 +100,13 @@ public class UserServiceImpl implements UserService{
     public List<User> searchUser(String query) {
         List<User> searchList = userRepository.searchUser(query);
         return searchList;
+    }
+
+    @Override
+    public User findUserByToken(String token) {
+        String email = jwtProvider.getEmailFromToken(token);
+        User user = userRepository.findByEmail(email);
+        return user;
     }
 
 }

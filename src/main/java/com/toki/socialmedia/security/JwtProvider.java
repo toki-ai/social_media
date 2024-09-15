@@ -1,13 +1,11 @@
 package com.toki.socialmedia.security;
 
-import com.toki.socialmedia.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
@@ -30,13 +28,11 @@ public class JwtProvider {
     }
 
     public String generateToken(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         return Jwts.builder()
                 .setIssuer("Toki")
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(new Date().getTime() + 864000000))
                 .claim("email", authentication.getName())
-                .claim("role", ((User) userDetails).getRole())
                 .signWith(secretKey)
                 .compact();
     }
@@ -56,11 +52,5 @@ public class JwtProvider {
             System.err.println("Invalid JWT token: " + e.getMessage());
             return false;
         }
-    }
-
-    public String getRoleFromToken(String jwt) {
-        jwt = jwt.substring(7);
-        Claims claims = Jwts.parser().setSigningKey(secretKey).build().parseClaimsJws(jwt).getBody();
-        return String.valueOf(claims.get("role"));
     }
 }

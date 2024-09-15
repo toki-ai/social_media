@@ -24,7 +24,7 @@ public class PostController {
     @Autowired
     UserServiceImpl userServiceImpl;
 
-    @GetMapping("/")
+    @GetMapping("")
     public ResponseEntity<List<Post>> getAllPost() {
         List<Post> post = postServiceImpl.findAllPost();
         return new ResponseEntity<List<Post>>(post, HttpStatus.OK);
@@ -40,47 +40,51 @@ public class PostController {
         }
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<List<Post>> getAllPostByUserId(@PathVariable UUID userId) {
+    @GetMapping("/userPosts")
+    public ResponseEntity<List<Post>> getAllPostByUserId(@RequestHeader("Authorization") String token) {
+        User reqUser = userServiceImpl.findUserByToken(token);
         try {
-            User user = userServiceImpl.findUserById(userId);
-            List<Post> post = postServiceImpl.findPostByUser(user);
+            List<Post> post = postServiceImpl.findPostByUser(reqUser);
             return new ResponseEntity<List<Post>>(post, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @PostMapping("/create/{userId}")
-    public ResponseEntity<Post> createNewPost(@PathVariable UUID userId, @RequestBody Post post) {
-        Post newPost = postServiceImpl.createNewPost(userId, post);
+    @PostMapping("/create")
+    public ResponseEntity<Post> createNewPost(@RequestHeader("Authorization") String token, @RequestBody Post post) {
+        User reqUser = userServiceImpl.findUserByToken(token);
+        Post newPost = postServiceImpl.createNewPost(reqUser.getId(), post);
         return new ResponseEntity<Post>(newPost, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/{postId}/delete/{userId}")
-    public ResponseEntity<ApiResponse> deletePost(@PathVariable UUID postId, @PathVariable UUID userId){
+    @DeleteMapping("/{postId}/delete")
+    public ResponseEntity<ApiResponse> deletePost(@RequestHeader("Authorization") String token, @PathVariable UUID userId){
         try {
-            String message = postServiceImpl.deletePost(postId, userId);
+            User reqUser = userServiceImpl.findUserByToken(token);
+            String message = postServiceImpl.deletePost(reqUser.getId(), userId);
             return new ResponseEntity<ApiResponse>(new ApiResponse(true, message), HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @PutMapping("/{postId}/save/{userId}")
-    public ResponseEntity<Post> savePost(@PathVariable UUID postId, @PathVariable UUID userId) {
+    @PutMapping("/{postId}/save")
+    public ResponseEntity<Post> savePost(@PathVariable UUID postId,@RequestHeader("Authorization") String token) {
         try {
-            Post post = postServiceImpl.savePost(postId, userId);
+            User reqUser = userServiceImpl.findUserByToken(token);
+            Post post = postServiceImpl.savePost(postId, reqUser.getId());
             return new ResponseEntity<Post>(post, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    @PutMapping("/{postId}/like/{userId}")
-    public ResponseEntity<Post> likePost(@PathVariable UUID postId, @PathVariable UUID userId) {
+    @PutMapping("/{postId}/like")
+    public ResponseEntity<Post> likePost(@PathVariable UUID postId, @RequestHeader("Authorization") String token) {
         try {
-            Post post = postServiceImpl.likePost(postId, userId);
+            User reqUser = userServiceImpl.findUserByToken(token);
+            Post post = postServiceImpl.likePost(postId, reqUser.getId());
             return new ResponseEntity<Post>(post, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
