@@ -7,13 +7,9 @@ import java.util.UUID;
 
 public interface UserService {
 
-    public User registerUser(User user);
+    public List<User> getAllUser();
 
-    public List<User> findAllUser();
-
-    public User findUserById (UUID userId) throws Exception;
-
-    public User findUserByEmail (String userEmail) throws Exception;
+    public User getUserById(UUID userId) throws Exception;
 
     public User followUser(UUID userId1, UUID userId2) throws Exception;
 
@@ -21,6 +17,6 @@ public interface UserService {
 
     public List<User> searchUser(String query);
 
-    public User findUserByToken(String token);
+    public User getUserByToken(String token);
 
 }

@@ -48,7 +48,7 @@ public class ReelServiceImpl implements ReelService{
 
     @Override
     public List<Reels> getReelsByUserId(UUID userId) throws Exception {
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         List<Reels> listReels = reelRepository.findByUser(user);
         return listReels;
     }

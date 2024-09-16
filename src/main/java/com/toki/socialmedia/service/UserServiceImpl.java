@@ -20,26 +20,14 @@ public class UserServiceImpl implements UserService{
     JwtProvider jwtProvider;
 
     @Override
-    public User registerUser(User user) {
-        User newUser = new User();
-        newUser.setFirstname(user.getFirstname());
-        newUser.setLastname(user.getLastname());
-        newUser.setPassword(user.getPassword());
-        newUser.setEmail(user.getEmail());
-        newUser.setGender(user.getGender());
-        User saveUser = userRepository.save(newUser);
-        return saveUser;
-    }
-
-    @Override
-    public List<User> findAllUser() {
+    public List<User> getAllUser() {
         List<User> list = new ArrayList<>();
         list = userRepository.findAll();
         return list;
     }
 
     @Override
-    public User findUserById(UUID userId) throws Exception {
+    public User getUserById(UUID userId) throws Exception {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
             return user.get();
@@ -48,14 +36,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByEmail(String userEmail) throws Exception {
-        return null;
-    }
-
-    @Override
     public User followUser(UUID userId1, UUID userId2) throws Exception {
-        User user2 = findUserById(userId2);
-        User user1 = findUserById(userId1);
+        User user2 = getUserById(userId2);
+        User user1 = getUserById(userId1);
         if (user1.getFollowing() == null) {
             user1.setFollowing(new ArrayList<>());
         }
@@ -103,7 +86,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findUserByToken(String token) {
+    public User getUserByToken(String token) {
         String email = jwtProvider.getEmailFromToken(token);
         User user = userRepository.findByEmail(email);
         return user;

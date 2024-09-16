@@ -3,7 +3,6 @@ package com.toki.socialmedia.service;
 import com.toki.socialmedia.model.Story;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.StoryRepository;
-import com.toki.socialmedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class StoryServiceImpl implements StoryService {
         newStory.setCaption(story.getCaption());
         newStory.setImage(story.getImage());
         newStory.setTimestamp(LocalDateTime.now());
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         newStory.setUser(user);
         Story savedStory = storyRepository.save(newStory);
         return savedStory;
@@ -51,7 +50,7 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public List<Story> getStoriesByUserId(UUID userId) throws Exception {
         List<Story> listStory = new ArrayList<>();
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         listStory = storyRepository.findByUser(user);
         return listStory;
     }

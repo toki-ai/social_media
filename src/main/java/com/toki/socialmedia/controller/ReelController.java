@@ -34,7 +34,7 @@ public class ReelController {
 
     @PostMapping("/create")
     public Reels createReel(@RequestHeader("Authorization") String token, @RequestBody Reels reel) throws Exception {
-        User user = userServiceImpl.findUserByToken(token);
+        User user = userServiceImpl.getUserByToken(token);
         Reels newReel = reelServiceImpl.createReel(user, reel);
         return newReel;
     }

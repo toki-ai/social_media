@@ -21,11 +21,6 @@ import java.util.List;
 
 @Component
 public class JwtValidator extends OncePerRequestFilter {
-
-    //Check token
-    //1. get token from header
-    //2. tạo UsernamePasswordAuthenticationToken(email, null, authorities)  => lấy function từ jwtProvider (provider lấy từ utils)
-    //3. save zô Security context
     private final Environment env;
 
     @Autowired
@@ -37,10 +32,6 @@ public class JwtValidator extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-//        if ("/auth/signup".equals(request.getRequestURI())) {
-//            filterChain.doFilter(request, response);
-//            return;
-//        }
         String jwt = request.getHeader(env.getProperty("JWT_HEADER"));
         if(jwt != null){
             try{
@@ -54,9 +45,6 @@ public class JwtValidator extends OncePerRequestFilter {
                 logger.warn("Invalid Token: " + e.getMessage());
             }
         }
-//        else{
-//            throw new BadCredentialsException("Token not found");
-//        }
         filterChain.doFilter(request, response);
     }
 }

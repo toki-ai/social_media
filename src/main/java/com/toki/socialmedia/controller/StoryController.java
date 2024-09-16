@@ -40,7 +40,7 @@ public class StoryController {
 
     @PostMapping("/create")
     public Story createStory(@RequestBody Story story, @RequestHeader("Authorization") String token) throws Exception {
-        User user = userServiceImpl.findUserByToken(token);
+        User user = userServiceImpl.getUserByToken(token);
         Story newStory = storyServiceImpl.createStory(user.getId(), story);
         return newStory;
     }

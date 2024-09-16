@@ -3,17 +3,16 @@ package com.toki.socialmedia.service;
 import com.toki.socialmedia.model.Post;
 import com.toki.socialmedia.model.User;
 
-import java.nio.channels.Pipe;
 import java.util.List;
 import java.util.UUID;
 
 public interface PostService {
 
-    public List<Post> findAllPost();
+    public List<Post> getAllPost();
 
-    public List<Post> findPostByUser(User user);
+    public List<Post> getPostByUser(User user);
 
-    public Post findPostById(UUID postId) throws Exception;
+    public Post getPostById(UUID postId) throws Exception;
 
     public Post createNewPost(UUID userId, Post post);
 

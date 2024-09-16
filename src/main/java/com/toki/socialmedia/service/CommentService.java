@@ -10,7 +10,5 @@ public interface CommentService {
     Comment createComment(UUID postId, UUID userId, Comment comment) throws Exception;
     Comment getCommentById(UUID commentId) throws Exception;
     void deleteComment(UUID postId, UUID commentId);
-    //List<Comment> getCommentByPostId(UUID postId);
-    //Comment updateComment(UUID commentId, Component comment);
     Comment likeComment(UUID userId, UUID commentId) throws Exception;
 }

@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +34,7 @@ public class CommentServiceImpl implements CommentService {
         Comment newComment = new Comment();
         newComment.setContent(comment.getContent());
         newComment.setCreatedAt(LocalDateTime.now());
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         newComment.setUser(user);
         Post post = postRepository.findById(postId).orElseThrow(() -> new Exception("Post not found"));
         if(post.getComments() == null) {
@@ -88,7 +87,7 @@ public class CommentServiceImpl implements CommentService {
         if(comment.getLiked() == null) {
             comment.setLiked(new ArrayList<>());
         }
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         if(comment.getLiked().contains(user)) {
             comment.getLiked().remove(user);
         }else{

@@ -1,7 +1,7 @@
 package com.toki.socialmedia;
 
 import com.toki.socialmedia.controller.AuthController;
-import com.toki.socialmedia.dto.LoginDTO;
+import com.toki.socialmedia.request.LoginRequest;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.UserRepository;
 import com.toki.socialmedia.response.AuthResponse;
@@ -92,7 +92,7 @@ class AuthControllerTests {
 	@Test
 	@DisplayName("Test Sign In User Not Found")
 	void testSignIn_Success() throws Exception {
-		LoginDTO loginDto = new LoginDTO();
+		LoginRequest loginDto = new LoginRequest();
 		loginDto.setEmail("test@example.com");
 		loginDto.setPassword("password");
 
@@ -121,7 +121,7 @@ class AuthControllerTests {
 	@Test
 	@DisplayName("Test Sign In Password Incorrect")
 	void testSignIn_UserNotFound() {
-		LoginDTO loginDto = new LoginDTO();
+		LoginRequest loginDto = new LoginRequest();
 		loginDto.setEmail("nonexistent@example.com");
 
 		when(userRepository.findByEmail(anyString())).thenReturn(null);
@@ -133,7 +133,7 @@ class AuthControllerTests {
 	@Test
 	@DisplayName("Test Sign In Bad Credentials By Wrong password")
 	void testSignIn_BadCredentials() throws Exception {
-		LoginDTO loginDto = new LoginDTO();
+		LoginRequest loginDto = new LoginRequest();
 		loginDto.setEmail("test@example.com");
 		loginDto.setPassword("wrongPassword");
 

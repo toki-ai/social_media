@@ -24,20 +24,20 @@ public class PostServiceImpl implements PostService {
     private UserServiceImpl userServiceImpl;
 
     @Override
-    public List<Post> findAllPost() {
+    public List<Post> getAllPost() {
         List<Post> list = new ArrayList<>();
         list = postRepository.findAll();
         return list;
     }
 
     @Override
-    public List<Post> findPostByUser(User user) {
+    public List<Post> getPostByUser(User user) {
         List<Post> list = postRepository.findByUser(user);
         return list;
     }
 
     @Override
-    public Post findPostById(UUID postId) throws Exception {
+    public Post getPostById(UUID postId) throws Exception {
         Optional<Post> post = postRepository.findById(postId);
         if (post.isPresent()) {
             return post.get();
@@ -53,7 +53,7 @@ public class PostServiceImpl implements PostService {
         newPost.setVideo(post.getVideo());
         User user = null;
         try {
-            user = userServiceImpl.findUserById(userId);
+            user = userServiceImpl.getUserById(userId);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -85,7 +85,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post likePost(UUID postId, UUID userId) throws Exception {
         User user = userRepository.findById(userId).get();
-        Post post = findPostById(postId);
+        Post post = getPostById(postId);
         List<User> liked = post.getLiked();
         if(liked == null){
             liked = new ArrayList<>();
@@ -104,7 +104,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post savePost(UUID postId, UUID userId) throws Exception {
         User user = userRepository.findById(userId).get();
-        Post post = findPostById(postId);
+        Post post = getPostById(postId);
         List<Post> save = user.getSaved();
         if(save == null){
             save = new ArrayList<>();

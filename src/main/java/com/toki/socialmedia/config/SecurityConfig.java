@@ -15,7 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 @Configuration
 @EnableWebSecurity
-public class AppConfig {
+public class SecurityConfig {
     @Autowired
     private Environment env;
     @Autowired

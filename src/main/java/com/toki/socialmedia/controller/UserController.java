@@ -5,9 +5,7 @@ import com.toki.socialmedia.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -19,33 +17,33 @@ public class UserController {
 
     @GetMapping("")
     public List<User> getAllUser(){
-        List<User> list = userServiceImpl.findAllUser();
+        List<User> list = userServiceImpl.getAllUser();
         return list;
     }
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId) throws Exception {
-        User user = userServiceImpl.findUserById(userId);
+        User user = userServiceImpl.getUserById(userId);
         return user;
     }
 
     @GetMapping("/profile")
     public User getUserByToken(@RequestHeader("Authorization") String token) {
-        User reqUser = userServiceImpl.findUserByToken(token);
+        User reqUser = userServiceImpl.getUserByToken(token);
         reqUser.setPassword(null);
         return reqUser;
     }
 
     @PutMapping("/update")
     public User updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) throws Exception {
-        User reqUser = userServiceImpl.findUserByToken(token);
+        User reqUser = userServiceImpl.getUserByToken(token);
         User updateUser = userServiceImpl.updateUser(reqUser.getId(), user);
         return updateUser;
     }
 
     @PutMapping("/follow/{userId2}")
     public User followUser (@RequestHeader("Authorization") String token, @PathVariable UUID userId2) throws Exception {
-        User reqUser = userServiceImpl.findUserByToken(token);
+        User reqUser = userServiceImpl.getUserByToken(token);
         User user1 = userServiceImpl.followUser(reqUser.getId(), userId2);
         return user1;
     }
