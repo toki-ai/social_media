@@ -1,4 +1,5 @@
 package com.toki.socialmedia.service;
+import com.toki.socialmedia.exception.UserException;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.UserRepository;
 import com.toki.socialmedia.security.JwtProvider;
@@ -27,16 +28,16 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User getUserById(UUID userId) throws Exception {
+    public User getUserById(UUID userId) throws UserException {
         Optional<User> user = userRepository.findById(userId);
         if(user.isPresent()){
             return user.get();
         }
-        throw new Exception("User with id: " + userId + " not found");
+        throw new UserException("User with id: " + userId + " not found");
     }
 
     @Override
-    public User followUser(UUID userId1, UUID userId2) throws Exception {
+    public User followUser(UUID userId1, UUID userId2) throws UserException {
         User user2 = getUserById(userId2);
         User user1 = getUserById(userId1);
         if (user1.getFollowing() == null) {
@@ -53,7 +54,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User updateUser(UUID userId, User user) throws Exception {
+    public User updateUser(UUID userId, User user) throws UserException {
         Optional<User> updatedUser = userRepository.findById(userId);
         User changeUser = null;
         if (updatedUser.isPresent()) {
@@ -76,7 +77,7 @@ public class UserServiceImpl implements UserService{
             User afterUpdate = userRepository.save(changeUser);
             return afterUpdate;
         }
-        throw new Exception("User with id: " + userId + " not found");
+        throw new UserException("User with id: " + userId + " not found");
     }
 
     @Override

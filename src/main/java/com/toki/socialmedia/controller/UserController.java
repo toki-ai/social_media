@@ -1,5 +1,6 @@
 package com.toki.socialmedia.controller;
 
+import com.toki.socialmedia.exception.UserException;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable UUID userId) throws Exception {
+    public User getUserById(@PathVariable UUID userId) throws UserException {
         User user = userServiceImpl.getUserById(userId);
         return user;
     }
@@ -35,14 +36,14 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public User updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) throws Exception {
+    public User updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) throws UserException {
         User reqUser = userServiceImpl.getUserByToken(token);
         User updateUser = userServiceImpl.updateUser(reqUser.getId(), user);
         return updateUser;
     }
 
     @PutMapping("/follow/{userId2}")
-    public User followUser (@RequestHeader("Authorization") String token, @PathVariable UUID userId2) throws Exception {
+    public User followUser (@RequestHeader("Authorization") String token, @PathVariable UUID userId2) throws UserException {
         User reqUser = userServiceImpl.getUserByToken(token);
         User user1 = userServiceImpl.followUser(reqUser.getId(), userId2);
         return user1;
@@ -55,12 +56,12 @@ public class UserController {
     }
 
 //    @DeleteMapping("/users/delete/{userId}")
-//    public String deleteUser(@PathVariable UUID userId) throws Exception {
+//    public String deleteUser(@PathVariable UUID userId) throws UserException {
 //        Optional<User> user = userRepository.findById(userId);
 //        if (user.isPresent()) {
 //            userRepository.delete(user.get());
 //            return "User with id: " + userId + " has been deleted";
 //        }
-//        throw new Exception("User with id: " + userId + " not found");
+//        throw new UserException("User with id: " + userId + " not found");
 //    }
 }

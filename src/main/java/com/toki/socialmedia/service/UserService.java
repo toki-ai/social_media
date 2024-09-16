@@ -1,5 +1,6 @@
 package com.toki.socialmedia.service;
 
+import com.toki.socialmedia.exception.UserException;
 import com.toki.socialmedia.model.User;
 
 import java.util.List;
@@ -9,11 +10,11 @@ public interface UserService {
 
     public List<User> getAllUser();
 
-    public User getUserById(UUID userId) throws Exception;
+    public User getUserById(UUID userId) throws UserException;
 
-    public User followUser(UUID userId1, UUID userId2) throws Exception;
+    public User followUser(UUID userId1, UUID userId2) throws UserException;
 
-    public User updateUser(UUID userId, User user) throws Exception;
+    public User updateUser(UUID userId, User user) throws UserException;
 
     public List<User> searchUser(String query);
 
