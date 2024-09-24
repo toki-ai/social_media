@@ -5,6 +5,7 @@ import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.response.ApiResponse;
 import com.toki.socialmedia.service.PostServiceImpl;
 import com.toki.socialmedia.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +23,14 @@ public class PostController {
     @Autowired
     UserServiceImpl userServiceImpl;
 
+    @Operation(summary = "Get all post")
     @GetMapping("")
     public ResponseEntity<List<Post>> getAllPost() {
         List<Post> post = postServiceImpl.getAllPost();
         return new ResponseEntity<List<Post>>(post, HttpStatus.OK);
     }
 
+    @Operation(summary = "Get post by id")
     @GetMapping("/{postId}")
     public ResponseEntity<Post> getPostById(@PathVariable UUID postId) {
         try {
@@ -38,6 +41,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Get all post by user")
     @GetMapping("/userPosts")
     public ResponseEntity<List<Post>> getAllPostByUserId(@RequestHeader("Authorization") String token) {
         User reqUser = userServiceImpl.getUserByToken(token);
@@ -49,6 +53,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Create post")
     @PostMapping("/create")
     public ResponseEntity<Post> createNewPost(@RequestHeader("Authorization") String token, @RequestBody Post post) {
         User reqUser = userServiceImpl.getUserByToken(token);
@@ -56,6 +61,7 @@ public class PostController {
         return new ResponseEntity<Post>(newPost, HttpStatus.ACCEPTED);
     }
 
+    @Operation(summary = "Delete post")
     @DeleteMapping("/{postId}/delete")
     public ResponseEntity<ApiResponse> deletePost(@RequestHeader("Authorization") String token, @PathVariable UUID userId){
         try {
@@ -67,6 +73,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Save post")
     @PutMapping("/{postId}/save")
     public ResponseEntity<Post> savePost(@PathVariable UUID postId,@RequestHeader("Authorization") String token) {
         try {
@@ -78,6 +85,7 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Like post")
     @PutMapping("/{postId}/like")
     public ResponseEntity<Post> likePost(@PathVariable UUID postId, @RequestHeader("Authorization") String token) {
         try {

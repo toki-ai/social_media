@@ -3,6 +3,7 @@ package com.toki.socialmedia.controller;
 import com.toki.socialmedia.exception.UserException;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,18 +17,21 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+    @Operation(summary = "Get all users")
     @GetMapping("")
     public List<User> getAllUser(){
         List<User> list = userServiceImpl.getAllUser();
         return list;
     }
 
+    @Operation(summary = "Get user by id")
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable UUID userId) throws UserException {
         User user = userServiceImpl.getUserById(userId);
         return user;
     }
 
+    @Operation(summary = "Get user profile by token")
     @GetMapping("/profile")
     public User getUserByToken(@RequestHeader("Authorization") String token) {
         User reqUser = userServiceImpl.getUserByToken(token);
@@ -35,6 +39,7 @@ public class UserController {
         return reqUser;
     }
 
+    @Operation(summary = "Update user")
     @PutMapping("/update")
     public User updateUser(@RequestHeader("Authorization") String token, @RequestBody User user) throws UserException {
         User reqUser = userServiceImpl.getUserByToken(token);
@@ -42,6 +47,7 @@ public class UserController {
         return updateUser;
     }
 
+    @Operation(summary = "Follow user")
     @PutMapping("/follow/{userId2}")
     public User followUser (@RequestHeader("Authorization") String token, @PathVariable UUID userId2) throws UserException {
         User reqUser = userServiceImpl.getUserByToken(token);
@@ -49,6 +55,7 @@ public class UserController {
         return user1;
     }
 
+    @Operation(summary = "Search user")
     @GetMapping("/search")
     public List<User> searchUser(@RequestParam String query){
         List<User> searchList = userServiceImpl.searchUser(query);

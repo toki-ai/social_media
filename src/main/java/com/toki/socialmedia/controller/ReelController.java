@@ -4,6 +4,7 @@ import com.toki.socialmedia.model.Reels;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.service.ReelServiceImpl;
 import com.toki.socialmedia.service.UserServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,18 +21,21 @@ public class ReelController {
         this.userServiceImpl = userServiceImpl;
     }
 
+    @Operation(summary = "Get all reels")
     @GetMapping("")
     public List<Reels> getAllReels(){
         List<Reels> listReels = reelServiceImpl.getAllReels();
         return listReels;
     }
 
+    @Operation(summary = "Get reels by user")
     @GetMapping("/{userId}")
     public List<Reels> getUserReels(@PathVariable UUID userId) throws Exception {
         List<Reels> listReels = reelServiceImpl.getReelsByUserId(userId);
         return listReels;
     }
 
+    @Operation(summary = "Create reel")
     @PostMapping("/create")
     public Reels createReel(@RequestHeader("Authorization") String token, @RequestBody Reels reel) throws Exception {
         User user = userServiceImpl.getUserByToken(token);

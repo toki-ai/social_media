@@ -6,6 +6,7 @@ import com.toki.socialmedia.repository.UserRepository;
 import com.toki.socialmedia.response.AuthResponse;
 import com.toki.socialmedia.security.JwtProvider;
 import com.toki.socialmedia.service.UserDetailService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,7 @@ public class AuthController {
     @Autowired
     UserDetailService userDetailService;
 
+    @Operation(summary = "Sign up")
     @PostMapping("/signup")
     public AuthResponse signUp(@RequestBody User user) throws Exception {
         User queryUser = userRepository.findByEmail(user.getEmail());
@@ -55,6 +57,7 @@ public class AuthController {
         return authRespone;
     }
 
+    @Operation(summary = "Sign in")
     @PostMapping("/signin")
     public AuthResponse signIn(@RequestBody LoginRequest loginDto) throws Exception {
         User queryUser = userRepository.findByEmail(loginDto.getEmail());
