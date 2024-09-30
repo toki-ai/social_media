@@ -59,11 +59,11 @@ public class UserServiceImpl implements UserService{
         User changeUser = null;
         if (updatedUser.isPresent()) {
             changeUser = updatedUser.get();
-            if (user.getFirstname() != null) {
-                changeUser.setFirstname(user.getFirstname());
+            if (user.getFirstName() != null) {
+                changeUser.setFirstName(user.getFirstName());
             }
-            if (user.getLastname() != null) {
-                changeUser.setLastname(user.getLastname());
+            if (user.getLastName() != null) {
+                changeUser.setLastName(user.getLastName());
             }
             if (user.getPassword() != null) {
                 changeUser.setPassword(user.getPassword());

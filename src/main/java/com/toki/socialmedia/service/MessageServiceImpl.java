@@ -8,6 +8,7 @@ import com.toki.socialmedia.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -41,6 +42,7 @@ public class MessageServiceImpl implements MessageService {
             newMessage.setImage(message.getImage());
         }
         newMessage.setSender(user);
+        newMessage.setTimeStamps(LocalDateTime.now());
         chat.getMessages().add(newMessage);
         chatRepository.save(chat);
         Message savedMessage = messageRepository.save(newMessage);

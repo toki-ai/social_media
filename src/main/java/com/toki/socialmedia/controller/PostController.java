@@ -53,6 +53,18 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Get all post by user id")
+    @GetMapping("/userPosts/{userId}")
+    public ResponseEntity<List<Post>> getAllPostByUserId(@PathVariable UUID userId) {
+        try {
+            User reqUser = userServiceImpl.getUserById(userId);
+            List<Post> post = postServiceImpl.getPostByUser(reqUser);
+            return new ResponseEntity<List<Post>>(post, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Operation(summary = "Create post")
     @PostMapping("/create")
     public ResponseEntity<Post> createNewPost(@RequestHeader("Authorization") String token, @RequestBody Post post) {

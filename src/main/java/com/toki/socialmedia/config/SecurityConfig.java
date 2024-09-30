@@ -33,17 +33,16 @@ public class SecurityConfig {
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        // Cho phép truy cập đến các tài nguyên Swagger
                         .requestMatchers(
-                                "/v3/api-docs/**",  // Cấu hình cho OpenAPI
-                                "/swagger-ui/**",   // Cấu hình cho Swagger UI
-                                "/swagger-resources/**", // Cấu hình cho tài nguyên Swagger
-                                "/webjars/**" // Cấu hình cho các tệp webjars
-                        ).permitAll() // Cho phép tất cả truy cập đến các tài nguyên này
-                        .requestMatchers("/post/**").authenticated()
-                        .requestMatchers("/users/**", "/users").authenticated()
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-resources/**",
+                                "/webjars/**",
+                                "/ws/**",
+                                "/ws"
+                        ).permitAll()
+                        .requestMatchers("/ws/**","/auth/**", "/posts", "/posts/{id}", "/users/search", "/users/{id}", "/posts/userPosts/{id}").permitAll()
+                        .anyRequest().permitAll())
                 .addFilterBefore(jwtValidator, BasicAuthenticationFilter.class)
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
@@ -53,14 +52,14 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:5173")); // Địa chỉ frontend
-        corsConfiguration.setAllowedMethods(Collections.singletonList("*")); // Cho phép tất cả các phương thức
-        corsConfiguration.setAllowedHeaders(Collections.singletonList("*")); // Cho phép tất cả các header
-        corsConfiguration.setAllowCredentials(true); // Cho phép cookie
-        corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization")); // Expose header nếu cần
-        corsConfiguration.setMaxAge(3600L); // Thời gian cache cho CORS
+        corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:3000"));
+        corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization"));
+        corsConfiguration.setMaxAge(3600L);
 
-        return request -> corsConfiguration; // Trả về cấu hình CORS cho tất cả các request
+        return request -> corsConfiguration;
     }
 
     @Bean

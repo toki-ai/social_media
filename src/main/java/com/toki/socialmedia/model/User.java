@@ -18,8 +18,8 @@ import java.util.UUID;
 public class User {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String firstname;
-    private String lastname;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
     private String gender;
