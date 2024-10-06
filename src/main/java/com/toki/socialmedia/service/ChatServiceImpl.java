@@ -28,6 +28,14 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
+    public Chat getChatByTwoUserId(UUID userId1, UUID userId2) throws Exception {
+        User user1 = userServiceImpl.getUserById(userId1);
+        User user2 = userServiceImpl.getUserById(userId2);
+        Chat chat = chatRepository.findChatByUsers(user1, user2);
+        return chat;
+    }
+
+    @Override
     public Chat getChatById(UUID chatId) throws Exception {
         Optional<Chat> chat = chatRepository.findById(chatId);
         if (chat.isPresent()) {

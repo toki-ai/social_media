@@ -10,6 +10,8 @@ public interface PostService {
 
     public List<Post> getAllPost();
 
+    public List<Post> searchPost(String query);
+
     public List<Post> getPostByUser(User user);
 
     public Post getPostById(UUID postId) throws Exception;

@@ -10,4 +10,5 @@ public interface ChatService {
     List<Chat> getChatByUserId(UUID userId) throws Exception;
     Chat getChatById(UUID chatId) throws Exception;
     Chat createChat(User reqUser, User resUser);
+    Chat getChatByTwoUserId(UUID userId1, UUID userId2) throws Exception;
 }

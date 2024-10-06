@@ -31,6 +31,12 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
+    public List<Post> searchPost(String query) {
+        List<Post> list = postRepository.searchPost(query);
+        return list;
+    }
+
+    @Override
     public List<Post> getPostByUser(User user) {
         List<Post> list = postRepository.findByUser(user);
         return list;
@@ -104,19 +110,19 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post savePost(UUID postId, UUID userId) throws Exception {
         User user = userRepository.findById(userId).get();
-        Post post = getPostById(postId);
-        List<Post> save = user.getSaved();
+        List<UUID> save = user.getSaved();
         if(save == null){
             save = new ArrayList<>();
         }
-        if (save.contains(post)) {
-            save.remove(post);
+        if (save.contains(postId)) {
+            save.remove(postId);
             user.setSaved(save);
         } else {
-            save.add(post);
+            save.add(postId);
             user.setSaved(save);
         }
         userRepository.save(user);
+        Post post = getPostById(postId);
         return post;
     }
 }

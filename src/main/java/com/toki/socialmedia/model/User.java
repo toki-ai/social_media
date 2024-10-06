@@ -1,5 +1,7 @@
 package com.toki.socialmedia.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,12 +24,12 @@ public class User {
     private String lastName;
     private String password;
     private String email;
-    private String gender;
+    private String image;
 
     @ElementCollection
     private List<UUID> following;
     @ElementCollection
     private List<UUID> followers;
-    @ManyToMany
-    private List<Post> saved;
+    @ElementCollection
+    private List<UUID> saved;
 }

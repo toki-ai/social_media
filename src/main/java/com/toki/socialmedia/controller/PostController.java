@@ -108,4 +108,15 @@ public class PostController {
             throw new RuntimeException(e);
         }
     }
+
+    @Operation(summary = "Search post")
+    @GetMapping("/search")
+    public ResponseEntity<List<Post>> likePost(@RequestParam String query) {
+        try {
+            List<Post> posts = postServiceImpl.searchPost(query);
+            return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -46,11 +46,19 @@ public class UserServiceImpl implements UserService{
         if (user2.getFollowers() == null) {
             user2.setFollowers(new ArrayList<>());
         }
-        user1.getFollowing().add(userId2);
-        user2.getFollowers().add(userId1);
-        userRepository.save(user1);
-        userRepository.save(user2);
-        return user1;
+        if(user2.getFollowers().contains(userId1)){
+            user2.getFollowers().remove(userId1);
+            user1.getFollowing().remove(userId2);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            return user1;
+        }else {
+            user1.getFollowing().add(userId2);
+            user2.getFollowers().add(userId1);
+            userRepository.save(user1);
+            userRepository.save(user2);
+            return user1;
+        }
     }
 
     @Override
@@ -71,8 +79,8 @@ public class UserServiceImpl implements UserService{
             if (user.getEmail() != null) {
                 changeUser.setEmail(user.getEmail());
             }
-            if(user.getGender() != null){
-                changeUser.setGender(user.getGender());
+            if(user.getImage() != null){
+                changeUser.setImage(user.getImage());
             }
             User afterUpdate = userRepository.save(changeUser);
             return afterUpdate;

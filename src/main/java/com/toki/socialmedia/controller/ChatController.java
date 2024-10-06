@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/chats")
@@ -35,4 +36,15 @@ public class ChatController {
         List<Chat> chats = chatServiceImpl.getChatByUserId(user.getId());
         return chats;
     }
+
+    @Operation(summary = "Get chats by two user")
+    @GetMapping("/userChats/{resUserId}")
+    public Chat getUserChats(@RequestHeader("Authorization") String token, @PathVariable UUID resUserId) throws Exception {
+        User user = userServiceImpl.getUserByToken(token);
+        Chat chat = chatServiceImpl.getChatByTwoUserId(user.getId(), resUserId);
+        return chat;
+    }
 }
+
+
+
