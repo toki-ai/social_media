@@ -20,6 +20,7 @@ public class MessageController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
+
     @Operation(summary = "Get message by chat")
     @GetMapping("/{chatId}")
     public List<Message> getMessageByChat(@PathVariable UUID chatId) throws Exception {
