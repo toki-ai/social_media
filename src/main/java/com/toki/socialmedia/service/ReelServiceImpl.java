@@ -3,8 +3,10 @@ package com.toki.socialmedia.service;
 import com.toki.socialmedia.model.Reels;
 import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.ReelRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +24,7 @@ public class ReelServiceImpl implements ReelService{
 
     @Override
     public List<Reels> getAllReels() {
-        List<Reels> listReels= new ArrayList<>();
-        listReels = reelRepository.findAll();
-        return listReels;
+        return reelRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     @Override
@@ -42,6 +42,7 @@ public class ReelServiceImpl implements ReelService{
         newReel.setTitle(reel.getTitle());
         newReel.setVideoUrl(reel.getVideoUrl());
         newReel.setUser(user);
+        newReel.setCreatedAt(LocalDateTime.now());
         Reels saveReel= reelRepository.save(newReel);
         return saveReel;
     }

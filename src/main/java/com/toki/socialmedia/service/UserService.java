@@ -20,4 +20,8 @@ public interface UserService {
 
     public User getUserByToken(String token);
 
+    List<User> getFollowersByUserId(UUID userId) throws UserException;
+
+    List<User> getFollowingByUserId(UUID userId) throws UserException;
+
 }

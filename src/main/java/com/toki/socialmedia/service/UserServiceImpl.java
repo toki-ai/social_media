@@ -82,6 +82,9 @@ public class UserServiceImpl implements UserService{
             if(user.getImage() != null){
                 changeUser.setImage(user.getImage());
             }
+            if(user.getBio() != null){
+                changeUser.setBio(user.getBio());
+            }
             User afterUpdate = userRepository.save(changeUser);
             return afterUpdate;
         }
@@ -101,4 +104,31 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    @Override
+    public List<User> getFollowersByUserId(UUID userId) throws UserException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+        List<UUID> followerIds = user.getFollowers();
+        List<User> followerUsers = new ArrayList<>();
+        for (UUID followerId : followerIds) {
+            User followerUser = userRepository.findById(followerId)
+                    .orElseThrow(() -> new UserException("User not found with ID: " + followerId));
+            followerUsers.add(followerUser);
+        }
+        return followerUsers;
+    }
+
+    @Override
+    public List<User> getFollowingByUserId(UUID userId) throws UserException {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserException("User not found with ID: " + userId));
+        List<UUID> followings = user.getFollowing();
+        List<User> followingUsers = new ArrayList<>();
+        for (UUID followerId : followings) {
+            User followerUser = userRepository.findById(followerId)
+                    .orElseThrow(() -> new UserException("User not found with ID: " + followerId));
+            followingUsers.add(followerUser);
+        }
+        return followingUsers;
+    }
 }

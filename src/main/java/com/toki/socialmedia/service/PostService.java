@@ -20,7 +20,7 @@ public interface PostService {
 
     public String deletePost(UUID postId, UUID userId) throws Exception;
 
-    public Post updatePost(UUID postId, Post post);
+    public Post updatePost(UUID postId, Post post) throws Exception;
 
     public Post likePost(UUID postId, UUID userId) throws Exception;
 

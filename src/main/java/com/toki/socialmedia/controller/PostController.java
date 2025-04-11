@@ -75,10 +75,10 @@ public class PostController {
 
     @Operation(summary = "Delete post")
     @DeleteMapping("/{postId}/delete")
-    public ResponseEntity<ApiResponse> deletePost(@RequestHeader("Authorization") String token, @PathVariable UUID userId){
+    public ResponseEntity<ApiResponse> deletePost(@RequestHeader("Authorization") String token, @PathVariable UUID postId){
         try {
             User reqUser = userServiceImpl.getUserByToken(token);
-            String message = postServiceImpl.deletePost(reqUser.getId(), userId);
+            String message = postServiceImpl.deletePost(postId, reqUser.getId());
             return new ResponseEntity<ApiResponse>(new ApiResponse(true, message), HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -117,6 +117,24 @@ public class PostController {
             return new ResponseEntity<List<Post>>(posts, HttpStatus.OK);
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @Operation(summary = "Update post")
+    @PutMapping("/{postId}")
+    public ResponseEntity<Post> updatePost(@PathVariable UUID postId, @RequestBody Post post, @RequestHeader("Authorization") String token) {
+        try {
+            User reqUser = userServiceImpl.getUserByToken(token);
+            Post existingPost = postServiceImpl.getPostById(postId);
+
+            if (!existingPost.getUser().getId().equals(reqUser.getId())) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+            
+            Post updatedPost = postServiceImpl.updatePost(postId, post);
+            return new ResponseEntity<>(updatedPost, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }

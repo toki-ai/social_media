@@ -5,6 +5,7 @@ import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.repository.PostRepository;
 import com.toki.socialmedia.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,9 +26,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public List<Post> getAllPost() {
-        List<Post> list = new ArrayList<>();
-        list = postRepository.findAll();
-        return list;
+        return postRepository.findAll(Sort.by(Sort.Direction.DESC, "date"));
     }
 
     @Override
@@ -84,8 +83,25 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(UUID postId, Post post) {
-        return null;
+    public Post updatePost(UUID postId, Post post) throws Exception {
+        Optional<Post> existingPost = postRepository.findById(postId);
+        if (existingPost.isPresent()) {
+            Post postToUpdate = existingPost.get();
+            
+            // Only update fields that are provided (not null)
+            if (post.getCaption() != null) {
+                postToUpdate.setCaption(post.getCaption());
+            }
+            if (post.getImage() != null) {
+                postToUpdate.setImage(post.getImage());
+            }
+            if (post.getVideo() != null) {
+                postToUpdate.setVideo(post.getVideo());
+            }
+            
+            return postRepository.save(postToUpdate);
+        }
+        throw new Exception("Post not found with id: " + postId);
     }
 
     @Override

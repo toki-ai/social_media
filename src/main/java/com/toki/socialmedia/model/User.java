@@ -25,6 +25,7 @@ public class User {
     private String password;
     private String email;
     private String image;
+    private String bio;
 
     @ElementCollection
     private List<UUID> following;

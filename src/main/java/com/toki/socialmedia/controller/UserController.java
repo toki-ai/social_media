@@ -5,6 +5,8 @@ import com.toki.socialmedia.model.User;
 import com.toki.socialmedia.service.UserServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +24,18 @@ public class UserController {
     public List<User> getAllUser(){
         List<User> list = userServiceImpl.getAllUser();
         return list;
+    }
+
+    @Operation(summary = "Get followers by user ID")
+    @GetMapping("/{userId}/followers")
+    public List<User> getFollowersByUserId(@PathVariable UUID userId) throws UserException {
+        return userServiceImpl.getFollowersByUserId(userId);
+    }
+
+    @Operation(summary = "Get following by user ID")
+    @GetMapping("/{userId}/following")
+    public List<User> getFollowingByUserId(@PathVariable UUID userId) throws UserException {
+        return userServiceImpl.getFollowingByUserId(userId);
     }
 
     @Operation(summary = "Get user by id")
